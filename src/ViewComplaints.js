@@ -1,0 +1,56 @@
+import React, { useEffect, useState } from 'react';
+
+function ViewComplaints() {
+  const [complaints, setComplaints] = useState([]);
+
+  useEffect(() => {
+    // This will call the backend API (we'll make it in future steps)
+    const fetchComplaints = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/complaints");
+        const data = await res.json();
+        setComplaints(data);
+      } catch (err) {
+        console.error("Error fetching complaints:", err);
+      }
+    };
+
+    fetchComplaints();
+  }, []);
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <h2>All Complaints</h2>
+      {complaints.length === 0 ? (
+        <p>No complaints found.</p>
+      ) : (
+        <table border="1" cellPadding="10" cellSpacing="0" style={{ width: '100%', textAlign: 'left' }}>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {complaints.map((c, index) => (
+              <tr key={index}>
+                <td>{c.name}</td>
+                <td>{c.email}</td>
+                <td>{c.complaintType}</td>
+                <td>{c.description}</td>
+                <td>{c.status}</td>
+                <td>{new Date(c.submittedAt).toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}
+
+export default ViewComplaints;
