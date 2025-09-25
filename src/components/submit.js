@@ -1,3 +1,4 @@
+// In client/client/src/components/submit.js
 import React, { useState } from 'react';
 
 function Submit() {
@@ -24,22 +25,41 @@ function Submit() {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!formData.name || !formData.email || !formData.type || !formData.description) {
-      setError('Please fill in all required fields.');
-      return;
-    }
-    setError('');
+  // In client/client/src/components/submit.js
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!formData.name || !formData.email || !formData.type || !formData.description) {
+    setError('Please fill in all required fields.');
+    return;
+  }
+  setError('');
 
-    // Simulate backend submission and ID generation
-    const newTrackingId = Math.random().toString(36).substring(2, 9).toUpperCase();
-    setTrackingId(newTrackingId);
+  // Use FormData to send file and text fields together
+  const dataToSend = new FormData();
+  dataToSend.append('name', formData.name);
+  dataToSend.append('email', formData.email);
+  dataToSend.append('type', formData.type);
+  dataToSend.append('description', formData.description);
+  if (formData.attachment) {
+    dataToSend.append('attachment', formData.attachment);
+  }
+
+  try {
+    const res = await fetch('http://localhost:5000/api/complaints', {
+      method: 'POST',
+      // Do NOT set Content-Type header, the browser will do it for FormData
+      body: dataToSend,
+    });
+
+    if (!res.ok) throw new Error('Submission failed');
+
+    const data = await res.json();
+    setTrackingId(data.trackingId);
     setSubmissionSuccess(true);
-
-    // In a real application, you would send formData to a server here.
-    console.log('Form Submitted:', formData);
-  };
+  } catch (err) {
+    setError('Failed to submit complaint. Please try again.');
+  }
+};
 
   const handleNewComplaint = () => {
     setFormData({

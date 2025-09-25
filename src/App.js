@@ -1,4 +1,5 @@
 import React from 'react';
+import AdminDashboard from './components/admindashboard';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './components/home';
 import Status from './components/status';
@@ -28,6 +29,7 @@ function App() {
           <Route path="/submit" element={<Submit />} />
           <Route path="/status" element={<Status />} />
           <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/admindashboard" element={<AdminDashboard />} />
           <Route path="/view" element={<ViewComplaints />} />
         </Routes>
 

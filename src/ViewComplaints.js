@@ -1,10 +1,10 @@
+// In client/client/src/ViewComplaints.js
 import React, { useEffect, useState } from 'react';
 
 function ViewComplaints() {
   const [complaints, setComplaints] = useState([]);
 
   useEffect(() => {
-    // This will call the backend API (we'll make it in future steps)
     const fetchComplaints = async () => {
       try {
         const res = await fetch("http://localhost:5000/api/complaints");
@@ -36,8 +36,8 @@ function ViewComplaints() {
             </tr>
           </thead>
           <tbody>
-            {complaints.map((c, index) => (
-              <tr key={index}>
+            {complaints.map((c) => (
+              <tr key={c._id}>
                 <td>{c.name}</td>
                 <td>{c.email}</td>
                 <td>{c.complaintType}</td>

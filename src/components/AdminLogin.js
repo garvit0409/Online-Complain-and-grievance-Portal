@@ -29,7 +29,7 @@ function AdminLogin() {
     setError('');
 
     try {
-      const res = await fetch('/api/admin/login', {
+      const res = await fetch('http://localhost:5000/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -40,7 +40,7 @@ function AdminLogin() {
         localStorage.setItem('adminToken', data.token);
         // Using a message box instead of alert()
         console.log('Login successful');
-        navigate('/admindashboard'); // redirect to the new admin dashboard
+        navigate('/admindashboard'); // Redirect to the view complaints page for now
       } else {
         setError('Invalid email or password');
         setCaptchaText(generateCaptcha());
